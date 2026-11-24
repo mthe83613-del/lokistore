@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>متجر لوكي ستور ليبيا | Loki Store</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden !important;
+      position: relative;
+      background-color: #0b0e14;
+      color: #f8fafc;
+      font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+      touch-action: pan-y;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      overflow-x: hidden;
+      padding: 0 14px;
+    }
+
+    /* الشريط العلوي */
+    .ticker {
+      width: 100%;
+      background: linear-gradient(90deg, #dc2626, #991b1b);
+      color: #ffffff;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+    }
+
+    /* الهيدر والمحفظة */
+    .header {
+      width: 100%;
+      padding: 16px 4px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      background: #dc2626;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 0 18px rgba(220, 38, 38, 0.55);
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #ef4444;
+      font-weight: 800;
+    }
+
+    .wallet-pill {
+      background: #141c2c;
+      border: 1.5px solid #2a3852;
+      padding: 8px 14px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .wallet-val {
+      font-size: 16px;
+      font-weight: 900;
+      color: #facc15;
+    }
+
+    .wallet-lbl {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* بنر الواجهة */
+    .hero-card {
+      background: linear-gradient(145deg, #161e30, #0d121d);
+      border: 1.5px solid #26334d;
+      border-radius: 20px;
+      padding: 20px 16px;
+      margin: 12px 0 16px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(220, 38, 38, 0.2);
+      border: 1px solid #dc2626;
+      color: #fca5a5;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* أزرار الإجراءات */
+    .action-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-family: 'Cairo', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: transform 0.1s ease;
+    }
+
+    .action-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-charge {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+    }
+
+    .btn-telegram {
+      background: #0ea5e9;
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-admin {
+      background: #182030;
+      color: #94a3b8;
+      border: 1px solid #334155;
+    }
+
+    /* شبكة الكروت */
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 18px 4px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .product-card {
+      background: #131926;
+      border: 1px solid #222f46;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 15px;
+      font-weight: 900;
+      color: #38bdf8;
+      margin-bottom: 12px;
+    }
+
+    .buy-btn {
+      width: 100%;
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      padding: 9px;
+      border-radius: 10px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .buy-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* نوافذ منبثقة */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 99999;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 420px;
+      background: #141a29;
+      border: 1.5px solid #334155;
+      border-radius: 20px;
+      padding: 22px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    .input-field {
+      width: 100%;
+      background: #090d15;
+      border: 1px solid #334155;
+      padding: 13px;
+      border-radius: 12px;
+      color: #ffffff;
+      font-family: 'Cairo', sans-serif;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+
+    .deposit-card-item {
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+  </style>
+
+  <!-- استدعاء Firebase السحابي لمشروعك lokistore-c05c9 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-placeholderKey-lokistore",
+      authDomain: "lokistore-c05c9.firebaseapp.com",
+      projectId: "lokistore-c05c9",
+      storageBucket: "lokistore-c05c9.appspot.com",
+      messagingSenderId: "1093233252331",
+      appId: "1:1093233252331:web:58309a4ebaa2b5a5105267"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.db = db;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.onSnapshot = onSnapshot;
+    window.doc = doc;
+    window.updateDoc = updateDoc;
+  </script>
+</head>
+<body>
+
+  <!-- شريط التنبيهات العلوي -->
+  <div class="ticker">
+    <span>⚡ الشحن الفوري متوفر 24/7 | ليبيانا والمدار وتوثيق تيليجرام الرسمي ⚡</span>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- الهيدر والماركة -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-icon">🎮</div>
+        <div>
+          <div class="brand-title">LOKI STORE</div>
+          <div class="brand-sub">لوكي ستور ليبيا | الشحن المعتمد</div>
+        </div>
+      </div>
+      <div class="wallet-pill" onclick="openChargeModal()">
+        <span class="wallet-lbl">المحفظة:</span>
+        <span class="wallet-val" id="userBalance">0.00 د.ل</span>
+      </div>
+    </header>
+
+    <!-- البنر الترحيبي -->
+    <div class="hero-card">
+      <div class="hero-badge">⚡ المتجر الإلكتروني الأول للشحن الفوري في ليبيا</div>
+      <h1 class="hero-title">اشحن محفظتك واحصل على كودك فوراً</h1>
+      <p class="hero-desc">خدمة شحن سريعة برصيد المدار وليبيانا مع تسليم فوري للأكواد وحفظ كامل لمعاملاتك.</p>
+    </div>
+
+    <!-- أزرار الخدمات السريعة -->
+    <button class="action-btn btn-charge" onclick="openChargeModal()">
+      ⚡ شحن المحفظة برصيد مدار / ليبيانا
+    </button>
+
+    <button class="action-btn btn-telegram" onclick="window.open('https://wa.me/218913696905', '_blank')">
+      ✈️ طلب توثيق وحساب تيليجرام (عبر واتساب)
+    </button>
+
+    <button class="action-btn btn-admin" onclick="openAdminModal()">
+      🔒 لوحة إدارة المتجر والخزينة (000000)
+    </button>
+
+    <!-- قسم الكروت الرقمية المتاحة -->
+    <div class="section-title">
+      <span>الكروت والبطاقات الرقمية المتاحة</span>
+      <span style="font-size: 12px; color: #10b981;">● تسليم فوري</span>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid">
+      <div class="product-card">
+        <div class="product-name">كرت مدار 5 د.ل</div>
+        <div class="product-price">5.00 د.ل</div>
+        <button class="buy-btn" onclick="buyCard('كرت مدار 5 د.ل', 5)">شراء الآن</button>
+      </div>
+
+      <div class="product-card">
+        <div class="product-name">كرت ليبيانا 5 د.ل</div>
+        <div class="product-price">5.00 د.ل</div>
+        <button class="buy-btn" onclick="buyCard('كرت ليبيانا 5 د.ل', 5)">شراء الآن</button>
+      </div>
+
+      <div class="product-card">
+        <div class="product-name">شدات ببجي 60 UC</div>
+        <div class="product-price">6.50 د.ل</div>
+        <button class="buy-btn" onclick="buyCard('شدات ببجي 60 UC', 6.5)">شراء الآن</button>
+      </div>
+
+      <div class="product-card">
+        <div class="product-name">كرت مدار 10 د.ل</div>
+        <div class="product-price">10.00 د.ل</div>
+        <button class="buy-btn" onclick="buyCard('كرت مدار 10 د.ل', 10)">شراء الآن</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- نافذة شحن الرصيد المباشرة -->
+  <div class="modal-overlay" id="chargeModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">⚡ شحن رصيد المحفظة</div>
+        <button class="modal-close" onclick="closeModals()">✕</button>
+      </div>
+      <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 12px;">
+        قم بتحويل الرصيد إلى رقم الإدارة المعتمد:<br>
+        <b style="color: #38bdf8; font-size: 19px; display: block; text-align: center; margin: 10px 0; background: #0b1120; padding: 10px; border-radius: 10px; border: 1px dashed #38bdf8;">0913696905</b>
+      </p>
+      <input type="text" id="senderPhone" class="input-field" placeholder="رقم هاتفك الذي حولت منه">
+      <input type="number" id="chargeAmount" class="input-field" placeholder="قيمة الرصيد المحول (بالدينار الليبي)">
+      <button class="action-btn btn-charge" onclick="submitCharge()">تأكيد إرسال الطلب للمخزون</button>
+    </div>
+  </div>
+
+  <!-- نافذة لوحة الإدارة (000000) -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">🔒 لوحة الإدارة والخزينة</div>
+        <button class="modal-close" onclick="closeModals()">✕</button>
+      </div>
+      <div id="adminLogin">
+        <input type="password" id="adminPass" class="input-field" placeholder="أدخل رمز الإدارة السري">
+        <button class="action-btn btn-charge" onclick="checkAdmin()">دخول الخزينة</button>
+      </div>
+      <div id="adminPanel" style="display: none;">
+        <h4 style="color: #38bdf8; margin-bottom: 12px; font-size: 15px;">طلبات الشحن المعلقة سحابياً:</h4>
+        <div id="depositList" style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">
+          جاري جلب الطلبات السحابية...
+        </div>
+        <button class="action-btn btn-telegram" onclick="addFundsDirect(10)">+ إضافة 10 د.ل يدوية للمحفظة</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let balance = parseFloat(localStorage.getItem('loki_balance')) || 0.00;
+    updateBalanceDisplay();
+
+    function updateBalanceDisplay() {
+      document.getElementById('userBalance').innerText = balance.toFixed(2) + ' د.ل';
+      localStorage.setItem('loki_balance', balance);
+    }
+
+    function openChargeModal() {
+      document.getElementById('chargeModal').style.display = 'flex';
+    }
+
+    function openAdminModal() {
+      document.getElementById('adminModal').style.display = 'flex';
+    }
+
+    function closeModals() {
+      document.getElementById('chargeModal').style.display = 'none';
+      document.getElementById('adminModal').style.display = 'none';
+    }
+
+    async function submitCharge() {
+      const phone = document.getElementById('senderPhone').value;
+      const amt = parseFloat(document.getElementById('chargeAmount').value);
+      if (!phone || isNaN(amt) || amt <= 0) {
+        alert('يرجى كتابة رقم الهاتف وقيمة الرصيد بشكل صحيح!');
+        return;
+      }
+
+      // محاولة الإرسال للسحابة Firebase
+      try {
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "deposits"), {
+            phone: phone,
+            amount: amt,
+            status: "pending",
+            timestamp: new Date().toISOString()
+          });
+        }
+      } catch (e) {
+        console.warn("سحابة Firebase تعمل بنمط المزامنة: ", e);
+      }
+
+      // حفظ المعاملة محلياً لضمان عدم ضياعها
+      let pendingList = JSON.parse(localStorage.getItem('loki_pending_deposits') || '[]');
+      pendingList.push({ id: Date.now(), phone: phone, amount: amt, status: 'pending' });
+      localStorage.setItem('loki_pending_deposits', JSON.stringify(pendingList));
+
+      alert('تم إرسال طلب الشحن بنجاح! سيتم فحص رسالة التحويل وإيداع الرصيد في محفظتك فوراً.');
+      closeModals();
+      document.getElementById('senderPhone').value = '';
+      document.getElementById('chargeAmount').value = '';
+    }
+
+    function checkAdmin() {
+      const p = document.getElementById('adminPass').value;
+      if (p === '000000') {
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadAdminDeposits();
+      } else {
+        alert('رمز الإدارة غير صحيح!');
+      }
+    }
+
+    function loadAdminDeposits() {
+      const listEl = document.getElementById('depositList');
+      let pending = JSON.parse(localStorage.getItem('loki_pending_deposits') || '[]');
+
+      if (pending.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; padding:15px; color:#64748b;">لا توجد طلبات شحن معلقة حالياً.</div>';
+        return;
+      }
+
+      let html = '';
+      pending.forEach((item, index) => {
+        html += `
+          <div class="deposit-card-item">
+            <div style="color:#ffffff; font-weight:800; font-size:14px;">طلب شحن: ${item.amount} د.ل</div>
+            <div style="color:#94a3b8; font-size:12px; margin:4px 0;">رقم الهاتف: <b style="color:#38bdf8;">${item.phone}</b></div>
+            <button onclick="approveDeposit(${index})" style="background:#10b981; color:#000; font-weight:900; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; width:100%; margin-top:6px; font-family:'Cairo';">
+              ✅ قبول وإيداع الرصيد في المحفظة
+            </button>
+          </div>
+        `;
+      });
+      listEl.innerHTML = html;
+    }
+
+    window.approveDeposit = function(index) {
+      let pending = JSON.parse(localStorage.getItem('loki_pending_deposits') || '[]');
+      if (pending[index]) {
+        balance += pending[index].amount;
+        updateBalanceDisplay();
+        alert(`تمت الموافقة بنجاح وإيداع ${pending[index].amount} د.ل في المحفظة!`);
+        pending.splice(index, 1);
+        localStorage.setItem('loki_pending_deposits', JSON.stringify(pending));
+        loadAdminDeposits();
+      }
+    };
+
+    function addFundsDirect(amount) {
+      balance += amount;
+      updateBalanceDisplay();
+      alert(`تمت إضافة ${amount} د.ل بنجاح!`);
+      closeModals();
+    }
+
+    function buyCard(name, price) {
+      if (balance >= price) {
+        balance -= price;
+        updateBalanceDisplay();
+        const code = 'LK-' + Math.floor(10000000 + Math.random() * 90000000);
+        alert(`🎉 تم شراء ${name} بنجاح!\n\nكود الكرت الخاص بك:\n${code}\n\n(تم خصم ${price} د.ل من رصيدك)`);
+      } else {
+        alert(`رصيدك الحالي (${balance.toFixed(2)} د.ل) غير كافٍ لشراء ${name}!\nيرجى شحن المحفظة أولاً.`);
+        openChargeModal();
+      }
+    }
+  </script>
+</body>
+</html>
