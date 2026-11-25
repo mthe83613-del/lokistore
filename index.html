@@ -5,26 +5,39 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>متجر لوكي ستور ليبيا | Loki Store</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  
+
   <style>
+    :root {
+      --bg-dark: #070a10;
+      --card-bg: rgba(17, 24, 39, 0.78);
+      --card-border: rgba(148, 163, 184, 0.16);
+      --accent-red: #ef4444;
+      --accent-red-dark: #991b1b;
+      --accent-cyan: #06b6d4;
+      --accent-blue: #0284c7;
+      --accent-gold: #facc15;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
-    
+
     html, body {
       width: 100%;
       max-width: 100vw;
       overflow-x: hidden !important;
       position: relative;
-      background-color: #0b0e14;
-      color: #f8fafc;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
       touch-action: pan-y;
     }
@@ -34,7 +47,75 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding-bottom: 80px;
+      padding-bottom: 84px;
+    }
+
+    /* خلفية ضوئية متحركة */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: radial-gradient(circle at 20% 15%, rgba(239, 68, 68, 0.14), transparent 45%),
+                  radial-gradient(circle at 85% 35%, rgba(6, 182, 212, 0.14), transparent 45%),
+                  radial-gradient(circle at 50% 90%, rgba(2, 132, 199, 0.12), transparent 50%),
+                  var(--bg-dark);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.45;
+      animation: floatOrb 11s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 240px;
+      height: 240px;
+      background: #dc2626;
+      top: -50px;
+      right: -50px;
+    }
+
+    .orb-2 {
+      width: 260px;
+      height: 260px;
+      background: #0284c7;
+      bottom: 40px;
+      left: -70px;
+      animation-delay: -5s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-18px, 22px) scale(1.08); }
+      100% { transform: translate(14px, -16px) scale(0.96); }
+    }
+
+    /* شريط إعلاني متحرك */
+    .ticker {
+      width: 100%;
+      background: linear-gradient(90deg, #b91c1c, #dc2626, #991b1b);
+      color: #ffffff;
+      padding: 10px 0;
+      font-size: 13px;
+      font-weight: 800;
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 0 6px 22px rgba(220, 38, 38, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .ticker-track {
+      display: inline-flex;
+      gap: 40px;
+      animation: marqueeSlide 18s linear infinite;
+    }
+
+    @keyframes marqueeSlide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(50%); }
     }
 
     .app-container {
@@ -44,102 +125,257 @@
       padding: 0 14px;
     }
 
-    /* الشريط العلوي */
-    .ticker {
-      width: 100%;
-      background: linear-gradient(90deg, #dc2626, #991b1b);
-      color: #ffffff;
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 800;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
-    }
-
     /* الهيدر والمحفظة */
     .header {
       width: 100%;
-      padding: 16px 4px 12px;
+      padding: 16px 2px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
+      animation: fadeDown 0.55s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;
     }
 
     .brand-icon {
-      width: 46px;
-      height: 46px;
-      background: #dc2626;
-      border-radius: 12px;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #ef4444, #991b1b);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
-      box-shadow: 0 0 18px rgba(220, 38, 38, 0.55);
+      font-size: 25px;
+      flex-shrink: 0;
+      box-shadow: 0 0 22px rgba(239, 68, 68, 0.5);
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 18px rgba(239, 68, 68, 0.45); }
+      50% { box-shadow: 0 0 28px rgba(239, 68, 68, 0.8); }
     }
 
     .brand-title {
       font-size: 19px;
       font-weight: 900;
-      line-height: 1.2;
+      line-height: 1.15;
       color: #ffffff;
       letter-spacing: 0.5px;
     }
 
     .brand-sub {
       font-size: 11px;
-      color: #ef4444;
+      color: #f87171;
       font-weight: 800;
     }
 
     .wallet-pill {
-      background: #141c2c;
-      border: 1.5px solid #2a3852;
-      padding: 8px 14px;
+      background: linear-gradient(135deg, rgba(20, 28, 44, 0.95), rgba(13, 19, 32, 0.95));
+      border: 1.5px solid rgba(250, 204, 21, 0.35);
+      padding: 8px 13px;
       border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .wallet-pill:active {
+      transform: scale(0.96);
     }
 
     .wallet-val {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
-      color: #facc15;
+      color: var(--accent-gold);
     }
 
     .wallet-lbl {
       font-size: 12px;
-      color: #94a3b8;
+      color: var(--text-muted);
     }
 
-    /* بنر الواجهة */
+    /* شريط حساب Google المرتبط بـ login.html */
+    .google-auth-card {
+      background: linear-gradient(135deg, rgba(17, 25, 42, 0.9), rgba(11, 17, 30, 0.92));
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 16px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      animation: fadeDown 0.65s ease both;
+    }
+
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: #38bdf8;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .user-status-text {
+      font-size: 12px;
+      font-weight: 800;
+      color: #e2e8f0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-sub-text {
+      font-size: 10px;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-google {
+      background: #ffffff;
+      color: #0f172a;
+      border: none;
+      border-radius: 11px;
+      padding: 8px 12px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-google:active {
+      transform: scale(0.96);
+    }
+
+    .btn-google.signed {
+      background: rgba(30, 41, 59, 0.95);
+      color: #f8fafc;
+      border: 1px solid #475569;
+      box-shadow: none;
+    }
+
+    /* بطاقة عرض متحركة بنمط فيديو/موشن */
     .hero-card {
-      background: linear-gradient(145deg, #161e30, #0d121d);
-      border: 1.5px solid #26334d;
-      border-radius: 20px;
+      position: relative;
+      background: linear-gradient(145deg, rgba(22, 31, 50, 0.92), rgba(11, 16, 28, 0.95));
+      border: 1.5px solid rgba(56, 189, 248, 0.25);
+      border-radius: 22px;
       padding: 20px 16px;
-      margin: 12px 0 16px;
+      margin: 8px 0 16px;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(
+        115deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.06) 50%,
+        transparent 65%
+      );
+      animation: shimmerSweep 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-35%) translateY(-10%); }
+      50% { transform: translateX(35%) translateY(10%); }
+      100% { transform: translateX(-35%) translateY(-10%); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .live-motion-strip {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .motion-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #cbd5e1;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: dotBeat 1.4s infinite;
+    }
+
+    @keyframes dotBeat {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.45); opacity: 0.55; }
     }
 
     .hero-badge {
       display: inline-block;
-      background: rgba(220, 38, 38, 0.2);
-      border: 1px solid #dc2626;
-      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.65);
+      color: #fecaca;
       padding: 4px 14px;
       border-radius: 20px;
       font-size: 12px;
@@ -157,15 +393,16 @@
 
     .hero-desc {
       font-size: 13px;
-      color: #94a3b8;
-      line-height: 1.5;
+      color: var(--text-muted);
+      line-height: 1.55;
     }
 
     /* أزرار الإجراءات */
     .action-btn {
+      position: relative;
       width: 100%;
       padding: 14px;
-      border-radius: 14px;
+      border-radius: 15px;
       border: none;
       font-family: 'Cairo', sans-serif;
       font-size: 15px;
@@ -176,32 +413,33 @@
       gap: 8px;
       cursor: pointer;
       margin-bottom: 12px;
-      transition: transform 0.1s ease;
+      overflow: hidden;
+      transition: transform 0.14s ease, box-shadow 0.2s ease;
     }
 
     .action-btn:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     .btn-charge {
-      background: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #ffffff;
-      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.42);
     }
 
     .btn-telegram {
-      background: #0ea5e9;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
       color: #ffffff;
-      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
+      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
     }
 
     .btn-admin {
-      background: #182030;
-      color: #94a3b8;
-      border: 1px solid #334155;
+      background: rgba(24, 32, 48, 0.9);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.28);
     }
 
-    /* شبكة الكروت */
+    /* شبكة الكروت المتحركة */
     .section-title {
       font-size: 16px;
       font-weight: 900;
@@ -220,14 +458,37 @@
     }
 
     .product-card {
-      background: #131926;
-      border: 1px solid #222f46;
-      border-radius: 16px;
+      background: linear-gradient(160deg, rgba(22, 30, 48, 0.9), rgba(13, 18, 30, 0.95));
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
       padding: 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      animation: fadeUp 0.75s ease both;
+    }
+
+    .product-card:hover,
+    .product-card:active {
+      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 12px 26px rgba(2, 132, 199, 0.22);
+    }
+
+    .card-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
     }
 
     .product-name {
@@ -246,30 +507,29 @@
 
     .buy-btn {
       width: 100%;
-      background: #dc2626;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
       color: #ffffff;
       border: none;
       padding: 9px;
-      border-radius: 10px;
+      border-radius: 11px;
       font-family: 'Cairo', sans-serif;
       font-weight: 800;
       font-size: 13px;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+      transition: transform 0.12s ease;
     }
 
     .buy-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
 
     /* نوافذ منبثقة */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -282,10 +542,16 @@
       max-width: 420px;
       background: #141a29;
       border: 1.5px solid #334155;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 22px;
       max-height: 90vh;
       overflow-y: auto;
+      animation: modalPop 0.22s ease both;
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.94); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .modal-header {
@@ -335,10 +601,18 @@
     }
   </style>
 
-  <!-- استدعاء Firebase السحابي لمشروعك lokistore-c05c9 -->
+  <!-- استدعاء Firebase السحابي لمشروعك lokistore-c05c9 وربط دخول Google عبر signInWithRedirect و login.html -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithRedirect,
+      getRedirectResult,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD-placeholderKey-lokistore",
@@ -351,6 +625,9 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({ prompt: "select_account" });
 
     window.db = db;
     window.addDoc = addDoc;
@@ -358,18 +635,101 @@
     window.onSnapshot = onSnapshot;
     window.doc = doc;
     window.updateDoc = updateDoc;
+    window.auth = auth;
+
+    // الانتقال لصفحة login.html أو التحويل المباشر عبر signInWithRedirect
+    window.goToGoogleLogin = async function (directRedirect = false) {
+      if (!directRedirect) {
+        window.location.href = "./login.html";
+        return;
+      }
+      try {
+        await signInWithRedirect(auth, googleProvider);
+      } catch (err) {
+        console.warn("تحويل إلى login.html:", err);
+        window.location.href = "./login.html";
+      }
+    };
+
+    window.logoutGoogleUser = async function () {
+      try {
+        await signOut(auth);
+        localStorage.removeItem("loki_user");
+        window.location.href = "./login.html";
+      } catch (err) {
+        console.warn("خطأ أثناء تسجيل الخروج:", err);
+      }
+    };
+
+    function renderUserState(user) {
+      const nameEl = document.getElementById("googleUserName");
+      const subEl = document.getElementById("googleUserSub");
+      const avatarEl = document.getElementById("googleAvatar");
+      const btnEl = document.getElementById("googleAuthBtn");
+      if (!nameEl || !subEl || !avatarEl || !btnEl) return;
+
+      if (user) {
+        nameEl.innerText = user.displayName || user.email || "حساب Google مفعل";
+        subEl.innerText = user.email || "متصل بحسابك السحابي";
+        if (user.photoURL) {
+          avatarEl.innerHTML = `<img src="${user.photoURL}" alt="Google" style="width:100%;height:100%;object-fit:cover;">`;
+        } else {
+          avatarEl.innerText = "G";
+        }
+        btnEl.className = "btn-google signed";
+        btnEl.innerText = "خروج";
+        btnEl.onclick = window.logoutGoogleUser;
+      } else {
+        nameEl.innerText = "حساب Google غير مسجل";
+        subEl.innerText = "اضغط للدخول عبر login.html";
+        avatarEl.innerHTML = `<span style="font-weight:900;color:#38bdf8;">G</span>`;
+        btnEl.className = "btn-google";
+        btnEl.innerHTML = `<span>دخول Google</span>`;
+        btnEl.onclick = function () {
+          window.goToGoogleLogin(false);
+        };
+      }
+    }
+
+    getRedirectResult(auth).catch((error) => {
+      console.warn("نتيجة التحويل:", error);
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      window.currentLokiUser = user || null;
+      if (user) {
+        localStorage.setItem("loki_user", JSON.stringify({
+          uid: user.uid,
+          email: user.email || "",
+          displayName: user.displayName || ""
+        }));
+      } else {
+        localStorage.removeItem("loki_user");
+      }
+      renderUserState(user);
+    });
   </script>
 </head>
 <body>
 
-  <!-- شريط التنبيهات العلوي -->
+  <div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- شريط إعلاني متحرك -->
   <div class="ticker">
-    <span>⚡ الشحن الفوري متوفر 24/7 | ليبيانا والمدار وتوثيق تيليجرام الرسمي ⚡</span>
+    <div class="ticker-track">
+      <span>⚡ الشحن الفوري متوفر 24/7 | ليبيانا والمدار وتوثيق تيليجرام الرسمي ⚡</span>
+      <span>🎮 تسليم فوري للأكواد الرقمية ومحفظة آمنة في لوكي ستور ليبيا ✨</span>
+      <span>⚡ الشحن الفوري متوفر 24/7 | ليبيانا والمدار وتوثيق تيليجرام الرسمي ⚡</span>
+      <span>🎮 تسليم فوري للأكواد الرقمية ومحفظة آمنة في لوكي ستور ليبيا ✨</span>
+    </div>
   </div>
 
   <div class="app-container">
-    
-    <!-- الهيدر والماركة -->
+
+    <!-- الهيدر والمحفظة -->
     <header class="header">
       <div class="brand">
         <div class="brand-icon">🎮</div>
@@ -384,8 +744,28 @@
       </div>
     </header>
 
-    <!-- البنر الترحيبي -->
+    <!-- بطاقة دخول Google المرتبطة بـ login.html -->
+    <div class="google-auth-card">
+      <div class="user-meta">
+        <div class="user-avatar" id="googleAvatar">
+          <span style="font-weight:900;color:#38bdf8;">G</span>
+        </div>
+        <div style="min-width:0;">
+          <div class="user-status-text" id="googleUserName">حساب Google غير مسجل</div>
+          <div class="user-sub-text" id="googleUserSub">اضغط للدخول عبر login.html</div>
+        </div>
+      </div>
+      <button type="button" class="btn-google" id="googleAuthBtn" onclick="goToGoogleLogin(false)">
+        <span>دخول Google</span>
+      </button>
+    </div>
+
+    <!-- بطاقة العرض المتحركة -->
     <div class="hero-card">
+      <div class="live-motion-strip">
+        <span class="motion-chip"><span class="pulse-dot"></span> نظام شحن مباشر</span>
+        <span class="motion-chip">⚡ استجابة فورية</span>
+      </div>
       <div class="hero-badge">⚡ المتجر الإلكتروني الأول للشحن الفوري في ليبيا</div>
       <h1 class="hero-title">اشحن محفظتك واحصل على كودك فوراً</h1>
       <p class="hero-desc">خدمة شحن سريعة برصيد المدار وليبيانا مع تسليم فوري للأكواد وحفظ كامل لمعاملاتك.</p>
@@ -412,26 +792,38 @@
 
     <div class="cards-grid" id="cardsGrid">
       <div class="product-card">
-        <div class="product-name">كرت مدار 5 د.ل</div>
-        <div class="product-price">5.00 د.ل</div>
+        <div>
+          <span class="card-badge">⚡ فوري</span>
+          <div class="product-name">كرت مدار 5 د.ل</div>
+          <div class="product-price">5.00 د.ل</div>
+        </div>
         <button class="buy-btn" onclick="buyCard('كرت مدار 5 د.ل', 5)">شراء الآن</button>
       </div>
 
       <div class="product-card">
-        <div class="product-name">كرت ليبيانا 5 د.ل</div>
-        <div class="product-price">5.00 د.ل</div>
+        <div>
+          <span class="card-badge">⚡ فوري</span>
+          <div class="product-name">كرت ليبيانا 5 د.ل</div>
+          <div class="product-price">5.00 د.ل</div>
+        </div>
         <button class="buy-btn" onclick="buyCard('كرت ليبيانا 5 د.ل', 5)">شراء الآن</button>
       </div>
 
       <div class="product-card">
-        <div class="product-name">شدات ببجي 60 UC</div>
-        <div class="product-price">6.50 د.ل</div>
+        <div>
+          <span class="card-badge">🎮 ألعاب</span>
+          <div class="product-name">شدات ببجي 60 UC</div>
+          <div class="product-price">6.50 د.ل</div>
+        </div>
         <button class="buy-btn" onclick="buyCard('شدات ببجي 60 UC', 6.5)">شراء الآن</button>
       </div>
 
       <div class="product-card">
-        <div class="product-name">كرت مدار 10 د.ل</div>
-        <div class="product-price">10.00 د.ل</div>
+        <div>
+          <span class="card-badge">⚡ فوري</span>
+          <div class="product-name">كرت مدار 10 د.ل</div>
+          <div class="product-price">10.00 د.ل</div>
+        </div>
         <button class="buy-btn" onclick="buyCard('كرت مدار 10 د.ل', 10)">شراء الآن</button>
       </div>
     </div>
@@ -506,13 +898,16 @@
         return;
       }
 
-      // محاولة الإرسال للسحابة Firebase
+      const activeUser = window.currentLokiUser || JSON.parse(localStorage.getItem('loki_user') || 'null');
+
       try {
         if (window.db && window.addDoc && window.collection) {
           await window.addDoc(window.collection(window.db, "deposits"), {
             phone: phone,
             amount: amt,
             status: "pending",
+            userId: activeUser ? activeUser.uid : null,
+            userEmail: activeUser ? activeUser.email : null,
             timestamp: new Date().toISOString()
           });
         }
@@ -520,7 +915,6 @@
         console.warn("سحابة Firebase تعمل بنمط المزامنة: ", e);
       }
 
-      // حفظ المعاملة محلياً لضمان عدم ضياعها
       let pendingList = JSON.parse(localStorage.getItem('loki_pending_deposits') || '[]');
       pendingList.push({ id: Date.now(), phone: phone, amount: amt, status: 'pending' });
       localStorage.setItem('loki_pending_deposits', JSON.stringify(pendingList));
