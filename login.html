@@ -39,6 +39,10 @@
       background: #ffffff;
       color: #1f2328;
     }
+    .btn-google:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
     .status {
       margin-top: 14px;
       padding: 12px;
@@ -69,7 +73,8 @@
     import {
       getAuth,
       GoogleAuthProvider,
-      signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
       onAuthStateChanged,
       signOut
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -96,23 +101,46 @@
       statusBox.innerHTML = text;
     }
 
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          showMessage(
+            `تم تسجيل الدخول بنجاح:<br><strong>${result.user.displayName || result.user.email}</strong>`
+          );
+        }
+      })
+      .catch((err) => {
+        showMessage(`خطأ: ${err.message}`);
+      });
+
     googleBtn.addEventListener("click", async () => {
+      googleBtn.disabled = true;
+      showMessage("جاري تحويلك إلى صفحة Google...");
       try {
-        const result = await signInWithPopup(auth, googleProvider);
-        showMessage(`تم تسجيل الدخول بنجاح:<br><strong>${result.user.displayName || result.user.email}</strong>`);
+        await signInWithRedirect(auth, googleProvider);
       } catch (err) {
+        googleBtn.disabled = false;
         showMessage(`خطأ: ${err.message}`);
       }
     });
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        googleBtn.style.display = "none";
         showMessage(
           `مسجل دخول باسم: <strong>${user.displayName || "مستخدم"}</strong><br>` +
           `البريد: ${user.email}<br><br>` +
           `<button id="logoutBtn" type="button" style="padding:6px 12px;border-radius:6px;border:none;cursor:pointer;">تسجيل الخروج</button>`
         );
-        document.getElementById("logoutBtn")?.addEventListener("click", () => signOut(auth));
+        document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+          await signOut(auth);
+          googleBtn.style.display = "block";
+          googleBtn.disabled = false;
+          statusBox.style.display = "none";
+        });
+      } else {
+        googleBtn.style.display = "block";
+        googleBtn.disabled = false;
       }
     });
   </script>
