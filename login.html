@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول - لوكي ستور</title>
+  <style>
+    * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0d1117;
+      color: #f0f6fc;
+      padding: 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 390px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+    h1 { margin: 0 0 8px; font-size: 24px; color: #58a6ff; }
+    p { margin: 0 0 22px; font-size: 14px; color: #8b949e; }
+    .btn-google {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #ffffff;
+      color: #1f2328;
+    }
+    .status {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      font-size: 13px;
+      line-height: 1.6;
+      text-align: right;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>لوكي ستور</h1>
+    <p>سجّل دخولك للوصول إلى حسابك وطلباتك الرقمية</p>
+
+    <button id="googleBtn" class="btn-google" type="button">
+      الدخول عبر Google
+    </button>
+
+    <div id="statusBox" class="status"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAuUbH7TjyV9GKD42d3FkfOO_V-_0EZBvU",
+      authDomain: "lokistore-c05c9.firebaseapp.com",
+      projectId: "lokistore-c05c9",
+      storageBucket: "lokistore-c05c9.firebasestorage.app",
+      messagingSenderId: "438900625321",
+      appId: "1:438900625321:web:4111d667165ce48e043eb8",
+      measurementId: "G-C9P3MLYBJH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    const googleBtn = document.getElementById("googleBtn");
+    const statusBox = document.getElementById("statusBox");
+
+    function showMessage(text) {
+      statusBox.style.display = "block";
+      statusBox.innerHTML = text;
+    }
+
+    googleBtn.addEventListener("click", async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        showMessage(`تم تسجيل الدخول بنجاح:<br><strong>${result.user.displayName || result.user.email}</strong>`);
+      } catch (err) {
+        showMessage(`خطأ: ${err.message}`);
+      }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        showMessage(
+          `مسجل دخول باسم: <strong>${user.displayName || "مستخدم"}</strong><br>` +
+          `البريد: ${user.email}<br><br>` +
+          `<button id="logoutBtn" type="button" style="padding:6px 12px;border-radius:6px;border:none;cursor:pointer;">تسجيل الخروج</button>`
+        );
+        document.getElementById("logoutBtn")?.addEventListener("click", () => signOut(auth));
+      }
+    });
+  </script>
+</body>
+</html>
